@@ -23,7 +23,9 @@ public class HttpHelper {
         for (Field field : fields) {
             field.setAccessible(true);
             try {
-                field.set(obj, req.getParameter(field.getName()));
+                Object value = req.getParameter(field.getName());
+                if (value != null)
+                    field.set(obj, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

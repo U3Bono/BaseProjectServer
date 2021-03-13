@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public abstract class BaseServlet<T extends BaseIPresenter<V>, V extends BaseIView> extends HttpServlet {
 
@@ -26,7 +25,7 @@ public abstract class BaseServlet<T extends BaseIPresenter<V>, V extends BaseIVi
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.req = req;
         this.resp = resp;
-        load();
+        super.service(req, resp);
     }
 
     @Override
@@ -38,7 +37,5 @@ public abstract class BaseServlet<T extends BaseIPresenter<V>, V extends BaseIVi
     }
 
     protected abstract T setPresenter();
-
-    protected abstract void load();
 
 }

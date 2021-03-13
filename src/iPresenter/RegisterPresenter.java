@@ -2,7 +2,7 @@ package iPresenter;
 
 import base.basMVP.BaseIModel;
 import base.basMVP.BaseIPresenter;
-import entity.RegisterEntity;
+import entity.UserEntity;
 import iModel.RegisterModel;
 import servlet.user.RegisterServlet;
 
@@ -13,16 +13,16 @@ public class RegisterPresenter extends BaseIPresenter<RegisterServlet> {
         this.registerModel = new RegisterModel();
     }
 
-    public void doRegister(RegisterEntity registerEntity) {
-        registerModel.register(registerEntity, new BaseIModel.ObjectBack() {
+    public void doRegister(UserEntity userEntity) {
+        registerModel.register(userEntity, new BaseIModel.ObjectBack() {
             @Override
             public void success(Object obj) {
-
+                view.success(obj);
             }
 
             @Override
             public void error(int code) {
-
+                view.error(code);
             }
         });
     }

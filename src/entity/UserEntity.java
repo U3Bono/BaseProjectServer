@@ -1,9 +1,19 @@
 package entity;
 
-public class LoginEntity {
+public class UserEntity {
 
+    int user_id;
     String user_account;
     String user_password;
+    String user_phone;
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
     public String getUser_account() {
         return user_account;
@@ -21,4 +31,11 @@ public class LoginEntity {
         this.user_password = user_password;
     }
 
+    public String getUser_phone() {
+        return user_phone;
+    }
+
+    public void setUser_phone(String user_phone) {
+        this.user_phone = user_phone;
+    }
 }

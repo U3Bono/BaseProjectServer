@@ -5,8 +5,7 @@ import java.util.*;
 
 import static java.lang.System.getProperties;
 import static utils.FieldUtils.getEntity;
-import static utils.SignalUtils.DB_CLS_ERROR;
-import static utils.SignalUtils.DB_VAR_ERROR;
+import static utils.SignalUtils.*;
 
 public class DataBaseUtils {
 
@@ -51,7 +50,7 @@ public class DataBaseUtils {
     }
 
     public static void search(String table, Object row, String val, SearchBack searchBack) {
-        if (val == null){
+        if (val == null) {
             searchBack.failed(DB_VAR_ERROR);
             return;
         }
@@ -63,9 +62,10 @@ public class DataBaseUtils {
             if (p != 0) {
                 sql.append(",");
             }
-            if (objMap.get((String) k).equals(val)) {
-                key = k.toString();
-            }
+            if (objMap.get((String) k) != null)
+                if (objMap.get((String) k).equals(val)) {
+                    key = k.toString();
+                }
             sql.append(k);
             p++;
         }
@@ -112,12 +112,12 @@ public class DataBaseUtils {
         value.append(")");
         sql += col + " values " + value;
         System.out.println(sql);
-        int code = 0;
+        int code = DA_UPDATE_ERROR;
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
             pst = con.prepareStatement(sql);
-            code = pst.executeUpdate();
+            code = pst.executeUpdate() == 0 ? DA_UPDATE_ERROR : DA_UPDATE_SUCCESS;
             con.close();
             pst.close();
         } catch (SQLException | ClassNotFoundException throwables) {
@@ -146,7 +146,7 @@ public class DataBaseUtils {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
             pst = con.prepareStatement(sql);
-            code = pst.executeUpdate();
+            code = pst.executeUpdate() == 0 ? DA_UPDATE_ERROR : DA_UPDATE_SUCCESS;
             con.close();
             pst.close();
         } catch (SQLException | ClassNotFoundException throwables) {
@@ -164,7 +164,7 @@ public class DataBaseUtils {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
             pst = con.prepareStatement(sql);
-            code = pst.executeUpdate();
+            code = pst.executeUpdate() == 0 ? DA_UPDATE_ERROR : DA_UPDATE_SUCCESS;
             con.close();
             pst.close();
         } catch (SQLException | ClassNotFoundException throwables) {

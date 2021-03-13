@@ -2,7 +2,7 @@ package iPresenter;
 
 import base.basMVP.BaseIModel;
 import base.basMVP.BaseIPresenter;
-import entity.LoginEntity;
+import entity.UserEntity;
 import iModel.LoginModel;
 import servlet.user.LoginServlet;
 
@@ -14,10 +14,10 @@ public class LoginPresenter extends BaseIPresenter<LoginServlet> {
         loginModel = new LoginModel();
     }
 
-    public void doLogin(LoginEntity loginEntity) {
+    public void doLogin(UserEntity userEntity) {
         if (view == null || loginModel == null)
             return;
-        loginModel.login(loginEntity, new BaseIModel.ObjectBack() {
+        loginModel.login(userEntity, new BaseIModel.ObjectBack() {
             @Override
             public void success(Object obj) {
                 view.success(obj);

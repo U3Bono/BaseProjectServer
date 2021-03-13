@@ -4,6 +4,11 @@ import base.BaseServlet;
 import base.basMVP.BaseIView;
 import entity.WelcomeEntity;
 import iPresenter.WelcomePresenter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 import static utils.JsonUtils.toJson;
 import static utils.ResponseUtils.respBack;
@@ -17,9 +22,8 @@ public class WelcomeServlet extends BaseServlet<WelcomePresenter, WelcomeServlet
     }
 
     @Override
-    public void load() {
-        WelcomeEntity welcomeEntity = new WelcomeEntity();
-        iPresenter.getWelcome(welcomeEntity);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 
     @Override
