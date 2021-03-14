@@ -11,6 +11,7 @@
         <servlet-name>Login</servlet-name>
         <url-pattern>/user/login</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>Register</servlet-name>
         <servlet-class>servlet.user.RegisterServlet</servlet-class>
@@ -19,6 +20,7 @@
         <servlet-name>Register</servlet-name>
         <url-pattern>/user/register</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>Detail</servlet-name>
         <servlet-class>servlet.user.DetailServlet</servlet-class>
@@ -27,6 +29,7 @@
         <servlet-name>Detail</servlet-name>
         <url-pattern>/user/detail</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>Modify</servlet-name>
         <servlet-class>servlet.user.ModifyServlet</servlet-class>
@@ -35,6 +38,7 @@
         <servlet-name>Modify</servlet-name>
         <url-pattern>/user/modify</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>Cancel</servlet-name>
         <servlet-class>servlet.user.CancelServlet</servlet-class>

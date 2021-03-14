@@ -23,9 +23,18 @@ public class FieldUtils {
     public static void setEntity(Object obj, Map<String, Object> map) {
         for (String key : map.keySet()) {
             try {
-                Field field = obj.getClass().getField(key);
+                Field field = obj.getClass().getDeclaredField(key);
                 field.setAccessible(true);
-                field.set(obj, map.get(key));
+                Class<?> type = field.getType();
+                String value = String.valueOf(map.get(key));
+                if (String.valueOf(type).equals("int")) {//判断类型
+                    if (value.length() > 9)//int类型最多9位
+                        continue;
+                    field.set(obj, Integer.parseInt(value));
+                }
+                if (String.class.equals(type)) {
+                    field.set(obj, value);
+                }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -67,7 +76,7 @@ public class FieldUtils {
         for (Field field : fields) {
             field.setAccessible(true);
             try {
-                if (field.get(obj).toString().equals(value.toString())) {
+                if (String.valueOf(field.get(obj)).equals(String.valueOf(value))) {
                     return field.getName();
                 }
             } catch (IllegalAccessException e) {
