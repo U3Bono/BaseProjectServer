@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static utils.HttpHelper.requestToEntity;
+import static utils.JsonUtils.toJson;
+import static utils.ResponseUtils.respBack;
 
 public class LoginServlet extends BaseServlet<LoginPresenter, LoginServlet> implements BaseIView {
     @Override
@@ -27,13 +29,7 @@ public class LoginServlet extends BaseServlet<LoginPresenter, LoginServlet> impl
 
     @Override
     public void success(Object obj) {
-        resp.setStatus(200);
-    }
-
-    @Override
-    public void error(int code) {
-        System.out.println(code);
-        resp.setStatus(500);
+        respBack(resp, toJson(obj));
     }
 
 }

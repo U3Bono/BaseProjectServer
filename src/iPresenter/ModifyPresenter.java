@@ -3,22 +3,21 @@ package iPresenter;
 import base.basMVP.BaseIModel;
 import base.basMVP.BaseIPresenter;
 import entity.UserEntity;
-import iModel.RegisterModel;
-import servlet.user.RegisterServlet;
+import iModel.ModifyModel;
+import servlet.user.ModifyServlet;
 
-import static utils.SignalUtils.USER_PRESENTER_ERROR;
+public class ModifyPresenter extends BaseIPresenter<ModifyServlet> {
 
-public class RegisterPresenter extends BaseIPresenter<RegisterServlet> {
-    RegisterModel registerModel;
+    ModifyModel modifyModel;
 
-    public RegisterPresenter() {
-        this.registerModel = new RegisterModel();
+    public ModifyPresenter() {
+        modifyModel = new ModifyModel();
     }
 
-    public void doRegister(UserEntity userEntity) {
+    public void doModify(UserEntity userEntity) {
         if (view == null | userEntity == null)
             return;
-        registerModel.register(userEntity, new BaseIModel.ObjectBack() {
+        modifyModel.modify(userEntity, new BaseIModel.ObjectBack() {
             @Override
             public void success(Object obj) {
                 view.success(obj);

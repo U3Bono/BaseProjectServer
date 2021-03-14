@@ -23,9 +23,18 @@ public class HttpHelper {
         for (Field field : fields) {
             field.setAccessible(true);
             try {
-                Object value = req.getParameter(field.getName());
-                if (value != null)
-                    field.set(obj, value);
+                String value = req.getParameter(field.getName());
+                if (value != null) {
+                    Class<?> type = field.getType();
+                    if (String.valueOf(type).equals("int")) {
+                        if (value.length() > 9)//int类型最多9位
+                            continue;
+                        field.set(obj, Integer.parseInt(value));
+                    }
+                    if (String.class.equals(type)) {
+                        field.set(obj, value);
+                    }
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

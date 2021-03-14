@@ -38,4 +38,9 @@ public abstract class BaseServlet<T extends BaseIPresenter<V>, V extends BaseIVi
 
     protected abstract T setPresenter();
 
+    public void error(int code) {
+        System.out.println(code);
+        resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    }
+
 }

@@ -1,17 +1,14 @@
 package utils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class FieldUtils {
 
     public static Map<String, Object> getEntity(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         for (Field field : fields) {
             field.setAccessible(true);
             try {
@@ -25,9 +22,8 @@ public class FieldUtils {
 
     public static void setEntity(Object obj, Map<String, Object> map) {
         for (String key : map.keySet()) {
-            Field field = null;
             try {
-                field = obj.getClass().getField(key);
+                Field field = obj.getClass().getField(key);
                 field.setAccessible(true);
                 field.set(obj, map.get(key));
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -47,12 +43,31 @@ public class FieldUtils {
         return typeList;
     }
 
-    public static String varName(Object obj, Object value) {
+    public static Class<?> varType(Object obj, Object value) {
+        if (value == null)
+            return null;
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
             try {
-                if (field.get(obj).toString().equals(value)) {
+                if (field.get(obj) == value) {
+                    return field.getType();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static String varName(Object obj, Object value) {
+        if (value == null)
+            return null;
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if (field.get(obj).toString().equals(value.toString())) {
                     return field.getName();
                 }
             } catch (IllegalAccessException e) {

@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import static java.lang.System.getProperties;
-import static utils.FieldUtils.getEntity;
+import static utils.FieldUtils.*;
 import static utils.SignalUtils.*;
 
 public class DataBaseUtils {
@@ -16,8 +16,6 @@ public class DataBaseUtils {
     // 数据库的用户名与密码，需要根据自己的设置
     static final String USER = "root";
     static final String PASS = "128071";
-
-    private static DataBaseUtils dataBaseUtils;
 
     private static Connection con;
     private static PreparedStatement pst;
@@ -32,7 +30,7 @@ public class DataBaseUtils {
         int startIndex = database.lastIndexOf(":");
         String databaseName = database.substring(startIndex + 1);
 
-        DatabaseMetaData databaseMetaData = null;
+        DatabaseMetaData databaseMetaData;
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -49,28 +47,28 @@ public class DataBaseUtils {
 
     }
 
-    public static void search(String table, Object row, String val, SearchBack searchBack) {
-        if (val == null) {
-            searchBack.failed(DB_VAR_ERROR);
-            return;
-        }
+    public static int search(String table, Object row, Map<String, Object> where) {
         StringBuilder sql = new StringBuilder("select ");
-        Map<String, Object> objMap = getEntity(row);
+        Map<String, Object> map = getEntity(row);
         int p = 0;
-        String key = "";
-        for (Object k : objMap.keySet()) {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (p != 0) {
                 sql.append(",");
             }
-            if (objMap.get((String) k) != null)
-                if (objMap.get((String) k).equals(val)) {
-                    key = k.toString();
-                }
+            String k = String.valueOf(entry.getKey());
             sql.append(k);
             p++;
         }
+        String key = "";
+        String val = "";
+        for (Map.Entry<String, Object> entry : where.entrySet()) {
+            key = entry.getKey();
+            val = String.valueOf(entry.getValue());
+            val = varType(row, val) == String.class ? '\'' + val + '\'' : val;
+        }
         sql.append(" from ").append(table).append(" where ").append(key).append(" = ").append(val);
         System.out.println(sql);
+        int code = DA_SEARCH_ERROR;
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -84,18 +82,23 @@ public class DataBaseUtils {
                     result.put(resultSetMetaData.getColumnName(i + 1), resultSet.getString(i + 1));
                 }
             }
-            searchBack.success(result);
+            if (!result.isEmpty()) {
+                code = DA_SEARCH_SUCCESS;
+                setEntity(row, result);
+            }
             con.close();
             pst.close();
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
-            searchBack.failed(DB_CLS_ERROR);
         }
+
+        return code;
     }
 
     public static int add(String table, Object row) {
         String sql = "insert into " + table + " ";
         Map<String, Object> map = getEntity(row);
+        List<Class<?>> type = entityType(row);
         StringBuilder col = new StringBuilder("(");
         StringBuilder value = new StringBuilder("(");
         int p = 0;
@@ -105,7 +108,11 @@ public class DataBaseUtils {
                 value.append(",");
             }
             col.append(entry.getKey());
-            value.append(entry.getValue());
+            if (type.get(p) == String.class) {
+                value.append('\'').append(entry.getValue()).append('\'');
+            } else {
+                value.append(entry.getValue());
+            }
             p++;
         }
         col.append(")");
@@ -129,19 +136,32 @@ public class DataBaseUtils {
     public static int modify(String table, Object row, Map<String, Object> where) {
         String sql = "update " + table + " set ";
         Map<String, Object> map = getEntity(row);
+        List<Class<?>> type = entityType(row);
         StringBuilder col = new StringBuilder();
         int p = 0;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() == null)
+                continue;
             if (p != 0) {
                 col.append(",");
             }
-            col.append(entry.getKey()).append("=").append(entry.getValue());
+            if (type.get(p) == String.class) {
+                col.append(entry.getKey()).append("=").append('\'').append(entry.getValue()).append('\'');
+            } else {
+                col.append(entry.getKey()).append("=").append(entry.getValue());
+            }
             p++;
         }
-        String key = String.valueOf(where.keySet());
-        sql += col + " where " + key + " = " + where.get(key);
+        String key = "";
+        String val = "";
+        for (Map.Entry<String, Object> entry : where.entrySet()) {
+            key = entry.getKey();
+            val = String.valueOf(entry.getValue());
+            val = varType(row, val) == String.class ? '\'' + val + '\'' : val;
+        }
+        sql += col + " where " + key + " = " + val;
         System.out.println(sql);
-        int code = 0;
+        int code = DA_UPDATE_ERROR;
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -155,11 +175,17 @@ public class DataBaseUtils {
         return code;
     }
 
-    public static int delete(String table, Map<String, Object> where) {
-        String key = String.valueOf(where.keySet());
-        String sql = "delete from " + table + " where " + key + " = " + where.get(key);
+    public static int delete(String table, Object row, Map<String, Object> where) {
+        String key = "";
+        String val = "";
+        for (Map.Entry<String, Object> entry : where.entrySet()) {
+            key = entry.getKey();
+            val = String.valueOf(entry.getValue());
+            val = varType(row, val) == String.class ? '\'' + val + '\'' : val;
+        }
+        String sql = "delete from " + table + " where " + key + " = " + val;
         System.out.println(sql);
-        int code = 0;
+        int code = DA_UPDATE_ERROR;
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -171,12 +197,6 @@ public class DataBaseUtils {
             throwables.printStackTrace();
         }
         return code;
-    }
-
-    public interface SearchBack {
-        void success(Map<String, Object> result);
-
-        void failed(int code);
     }
 
 }

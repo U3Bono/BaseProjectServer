@@ -3,22 +3,21 @@ package iPresenter;
 import base.basMVP.BaseIModel;
 import base.basMVP.BaseIPresenter;
 import entity.UserEntity;
-import iModel.RegisterModel;
-import servlet.user.RegisterServlet;
+import iModel.CancelModel;
+import servlet.user.CancelServlet;
 
-import static utils.SignalUtils.USER_PRESENTER_ERROR;
+public class CancelPresenter extends BaseIPresenter<CancelServlet> {
 
-public class RegisterPresenter extends BaseIPresenter<RegisterServlet> {
-    RegisterModel registerModel;
+    CancelModel cancelModel;
 
-    public RegisterPresenter() {
-        this.registerModel = new RegisterModel();
+    public CancelPresenter() {
+        cancelModel = new CancelModel();
     }
 
-    public void doRegister(UserEntity userEntity) {
+    public void doCancel(UserEntity userEntity) {
         if (view == null | userEntity == null)
             return;
-        registerModel.register(userEntity, new BaseIModel.ObjectBack() {
+        cancelModel.cancelUser(userEntity, new BaseIModel.ObjectBack() {
             @Override
             public void success(Object obj) {
                 view.success(obj);

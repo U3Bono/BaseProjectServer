@@ -3,23 +3,21 @@ package iPresenter;
 import base.basMVP.BaseIModel;
 import base.basMVP.BaseIPresenter;
 import entity.UserEntity;
-import iModel.LoginModel;
-import servlet.user.LoginServlet;
+import iModel.DetailModel;
+import servlet.user.DetailServlet;
 
-import static utils.SignalUtils.USER_PRESENTER_ERROR;
+public class DetailPresenter extends BaseIPresenter<DetailServlet> {
 
-public class LoginPresenter extends BaseIPresenter<LoginServlet> {
+    DetailModel detailModel;
 
-    LoginModel loginModel;
-
-    public LoginPresenter() {
-        loginModel = new LoginModel();
+    public DetailPresenter() {
+        detailModel = new DetailModel();
     }
 
-    public void doLogin(UserEntity userEntity) {
+    public void getDetail(UserEntity userEntity){
         if(view == null | userEntity == null)
             return;
-        loginModel.login(userEntity, new BaseIModel.ObjectBack() {
+        detailModel.detail(userEntity, new BaseIModel.ObjectBack() {
             @Override
             public void success(Object obj) {
                 view.success(obj);
@@ -31,5 +29,4 @@ public class LoginPresenter extends BaseIPresenter<LoginServlet> {
             }
         });
     }
-
 }

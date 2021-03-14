@@ -3,7 +3,7 @@ package servlet.user;
 import base.BaseServlet;
 import base.basMVP.BaseIView;
 import entity.UserEntity;
-import iPresenter.RegisterPresenter;
+import iPresenter.ModifyPresenter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,25 +11,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static utils.HttpHelper.requestToEntity;
-import static utils.JsonUtils.toJson;
-import static utils.ResponseUtils.respBack;
 
-public class RegisterServlet extends BaseServlet<RegisterPresenter, RegisterServlet> implements BaseIView {
+public class ModifyServlet extends BaseServlet<ModifyPresenter, ModifyServlet> implements BaseIView {
     @Override
-    protected RegisterPresenter setPresenter() {
-        return new RegisterPresenter();
+    protected ModifyPresenter setPresenter() {
+        return new ModifyPresenter();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserEntity userEntity = new UserEntity();
         requestToEntity(req, userEntity);
-        iPresenter.doRegister(userEntity);
+        iPresenter.doModify(userEntity);
     }
 
     @Override
     public void success(Object obj) {
-        respBack(resp,toJson(obj));
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
 }

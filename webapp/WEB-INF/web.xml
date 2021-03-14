@@ -19,5 +19,29 @@
         <servlet-name>Register</servlet-name>
         <url-pattern>/user/register</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>Detail</servlet-name>
+        <servlet-class>servlet.user.DetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Detail</servlet-name>
+        <url-pattern>/user/detail</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Modify</servlet-name>
+        <servlet-class>servlet.user.ModifyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Modify</servlet-name>
+        <url-pattern>/user/modify</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Cancel</servlet-name>
+        <servlet-class>servlet.user.CancelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Cancel</servlet-name>
+        <url-pattern>/user/cancel</url-pattern>
+    </servlet-mapping>
 </web-app>
 
