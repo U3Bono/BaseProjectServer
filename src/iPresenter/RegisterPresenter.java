@@ -20,8 +20,8 @@ public class RegisterPresenter extends BaseIPresenter<RegisterServlet> {
             return;
         registerModel.register(userEntity, new BaseIModel.ObjectBack() {
             @Override
-            public void success(Object obj) {
-                view.success(obj);
+            public void success(String result) {
+                view.success(result);
             }
 
             @Override

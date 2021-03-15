@@ -7,10 +7,9 @@ import iPresenter.ModifyPresenter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.HttpHelper;
 
 import java.io.IOException;
-
-import static utils.HttpHelper.requestToEntity;
 
 public class ModifyServlet extends BaseServlet<ModifyPresenter, ModifyServlet> implements BaseIView {
     @Override
@@ -21,13 +20,8 @@ public class ModifyServlet extends BaseServlet<ModifyPresenter, ModifyServlet> i
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserEntity userEntity = new UserEntity();
-        requestToEntity(req, userEntity);
+        HttpHelper.requestToEntity(req, userEntity);
         iPresenter.doModify(userEntity);
-    }
-
-    @Override
-    public void success(Object obj) {
-        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
 }

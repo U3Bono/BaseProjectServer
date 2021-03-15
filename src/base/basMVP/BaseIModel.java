@@ -1,11 +1,10 @@
 package base.basMVP;
 
-import java.util.Map;
-
 public interface BaseIModel {
 
-    interface ObjectBack{
-        void success(Object obj);
+    interface ObjectBack {
+        void success(String result);
+
         void error(int code);
     }
 }

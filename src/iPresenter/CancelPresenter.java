@@ -19,8 +19,8 @@ public class CancelPresenter extends BaseIPresenter<CancelServlet> {
             return;
         cancelModel.cancelUser(userEntity, new BaseIModel.ObjectBack() {
             @Override
-            public void success(Object obj) {
-                view.success(obj);
+            public void success(String result) {
+                view.success(result);
             }
 
             @Override

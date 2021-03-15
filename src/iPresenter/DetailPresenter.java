@@ -19,8 +19,8 @@ public class DetailPresenter extends BaseIPresenter<DetailServlet> {
             return;
         detailModel.detail(userEntity, new BaseIModel.ObjectBack() {
             @Override
-            public void success(Object obj) {
-                view.success(obj);
+            public void success(String result) {
+                view.success(result);
             }
 
             @Override

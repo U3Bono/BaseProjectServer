@@ -103,15 +103,17 @@ public class DataBaseUtils {
         StringBuilder value = new StringBuilder("(");
         int p = 0;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (p != 0) {
-                col.append(",");
-                value.append(",");
-            }
-            col.append(entry.getKey());
-            if (type.get(p) == String.class) {
-                value.append('\'').append(entry.getValue()).append('\'');
-            } else {
-                value.append(entry.getValue());
+            if (entry.getValue() != null) {
+                if (p != 0) {
+                    col.append(",");
+                    value.append(",");
+                }
+                col.append(entry.getKey());
+                if (type.get(p) == String.class) {
+                    value.append('\'').append(entry.getValue()).append('\'');
+                } else {
+                    value.append(entry.getValue());
+                }
             }
             p++;
         }

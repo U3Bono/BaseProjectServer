@@ -7,12 +7,9 @@ import iPresenter.LoginPresenter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.HttpHelper;
 
 import java.io.IOException;
-
-import static utils.HttpHelper.requestToEntity;
-import static utils.JsonUtils.toJson;
-import static utils.ResponseUtils.respBack;
 
 public class LoginServlet extends BaseServlet<LoginPresenter, LoginServlet> implements BaseIView {
     @Override
@@ -23,13 +20,8 @@ public class LoginServlet extends BaseServlet<LoginPresenter, LoginServlet> impl
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserEntity userEntity = new UserEntity();
-        requestToEntity(req, userEntity);
+        HttpHelper.requestToEntity(req, userEntity);
         iPresenter.doLogin(userEntity);
-    }
-
-    @Override
-    public void success(Object obj) {
-        respBack(resp, toJson(obj));
     }
 
 }

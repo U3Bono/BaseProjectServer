@@ -6,8 +6,6 @@ import entity.UserEntity;
 import iModel.LoginModel;
 import servlet.user.LoginServlet;
 
-import static utils.SignalUtils.USER_PRESENTER_ERROR;
-
 public class LoginPresenter extends BaseIPresenter<LoginServlet> {
 
     LoginModel loginModel;
@@ -21,8 +19,8 @@ public class LoginPresenter extends BaseIPresenter<LoginServlet> {
             return;
         loginModel.login(userEntity, new BaseIModel.ObjectBack() {
             @Override
-            public void success(Object obj) {
-                view.success(obj);
+            public void success(String result) {
+                view.success(result);
             }
 
             @Override

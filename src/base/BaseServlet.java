@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.JsonUtils;
+import utils.ResponseUtils;
 
 import java.io.IOException;
 
@@ -41,6 +43,10 @@ public abstract class BaseServlet<T extends BaseIPresenter<V>, V extends BaseIVi
     public void error(int code) {
         System.out.println(code);
         resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    }
+
+    public void success(String result) {
+        ResponseUtils.respBack(resp, result);
     }
 
 }

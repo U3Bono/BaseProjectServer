@@ -2,33 +2,28 @@ package iModel;
 
 import base.basMVP.BaseIModel;
 import entity.UserEntity;
-import utils.DataBaseUtils;
+import utils.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static utils.DBTableUtils.USER_TABLE;
-import static utils.FieldUtils.varName;
-import static utils.SignalUtils.DA_SEARCH_SUCCESS;
-import static utils.SignalUtils.USER_MODEL_ERROR;
+public class LoginModel implements BaseIModel {
 
-public class LoginModel {
-
-    public void login(final UserEntity userEntity, final BaseIModel.ObjectBack objectBack) {
-        String searchAccount = userEntity.getUser_account();
+    public void login(final UserEntity userEntity, ObjectBack objectBack) {
+        String searchPhone = userEntity.getUser_phone();
         String searchPassword = userEntity.getUser_password();
-        if (searchAccount == null | searchPassword == null) {
-            objectBack.error(USER_MODEL_ERROR);
+        if (searchPhone == null | searchPassword == null) {
+            objectBack.error(SignalUtils.USER_MODEL_ERROR);
             return;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put(varName(userEntity, userEntity.getUser_account()), userEntity.getUser_account());
-        if (DataBaseUtils.search(USER_TABLE, userEntity, map) == DA_SEARCH_SUCCESS) {
+        map.put(FieldUtils.varName(userEntity, userEntity.getUser_phone()), userEntity.getUser_phone());
+        if (DataBaseUtils.search(DBTableUtils.USER_TABLE, userEntity, map) == SignalUtils.DA_SEARCH_SUCCESS) {
             Map<String, Object> result = new HashMap<>();
-            result.put(varName(userEntity, userEntity.getUser_id()), userEntity.getUser_id());
-            objectBack.success(result);
+            result.put(FieldUtils.varName(userEntity, userEntity.getUser_id()), userEntity.getUser_id());
+            objectBack.success(JsonUtils.toJson(result));
         } else {
-            objectBack.error(USER_MODEL_ERROR);
+            objectBack.error(SignalUtils.USER_MODEL_ERROR);
         }
 
     }
