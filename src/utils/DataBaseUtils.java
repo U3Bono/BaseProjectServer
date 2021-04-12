@@ -11,7 +11,7 @@ public class DataBaseUtils {
 
     // MySQL 8.0 以上版本 - JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/baseproject?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/base_project?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
     // 数据库的用户名与密码，需要根据自己的设置
     static final String USER = "root";
@@ -47,6 +47,7 @@ public class DataBaseUtils {
 
     }
 
+    //查询单行数据
     public static int search(String table, Object row, Map<String, Object> where) {
         StringBuilder sql = new StringBuilder("select ");
         Map<String, Object> map = getEntity(row);
@@ -66,7 +67,7 @@ public class DataBaseUtils {
             val = String.valueOf(entry.getValue());
             val = varType(row, val) == String.class ? '\'' + val + '\'' : val;
         }
-        sql.append(" from ").append(table).append(" where ").append(key).append(" = ").append(val);
+        sql.append(" from ").append(table).append(" where ").append(key).append(" = ").append(val); //生成SQL
         System.out.println(sql);
         int code = DA_SEARCH_ERROR;
         try {
@@ -95,6 +96,7 @@ public class DataBaseUtils {
         return code;
     }
 
+    //添加一行数据
     public static int add(String table, Object row) {
         String sql = "insert into " + table + " ";
         Map<String, Object> map = getEntity(row);
@@ -135,6 +137,7 @@ public class DataBaseUtils {
         return code;
     }
 
+    //修改数据
     public static int modify(String table, Object row, Map<String, Object> where) {
         String sql = "update " + table + " set ";
         Map<String, Object> map = getEntity(row);
@@ -177,6 +180,7 @@ public class DataBaseUtils {
         return code;
     }
 
+    //删除数据
     public static int delete(String table, Object row, Map<String, Object> where) {
         String key = "";
         String val = "";
