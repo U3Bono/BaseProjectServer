@@ -1,0 +1,4 @@
+# BaseServer
+Servlet搭建的基本Web服务，为Android客户端提供数据
+
+利用Servlet连接MySQL，通过HTTP与客户端交换数据
